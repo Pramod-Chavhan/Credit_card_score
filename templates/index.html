@@ -7,92 +7,98 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
   <style>
     body {
-      background: url('https://imgs.search.brave.com/BabatrNjMBWe5-9tHISZu491N2MOvc1ef_zgnx503UI/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzA2LzkzLzM0LzE4/LzM2MF9GXzY5MzM0/MTgzM19XNzl0UTBj/RDJOb3JYOTZ5VnVp/c3Y4amZ3cjM3c3RV/aS5qcGc') no-repeat center center fixed;
+      background-image: url('https://images.unsplash.com/photo-1535223289827-42f1e9919769');
       background-size: cover;
-      position: relative;
-      min-height: 100vh;
+      background-position: center;
+      background-attachment: fixed;
       font-family: 'Segoe UI', sans-serif;
-    }
-
-    body::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 0;
+      color: #fff;
+      margin: 0;
+      padding: 0;
     }
 
     .container {
-      position: relative;
-      z-index: 1;
+      padding-top: 3rem;
+      padding-bottom: 3rem;
     }
 
     .card {
-      backdrop-filter: blur(px);
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(18px);
       border-radius: 1.5rem;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
       padding: 2rem;
-      margin-top: 2rem;
-      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     h2 {
       font-weight: 700;
-      color: #00f7ff;
+      color: #fff;
+      margin-top: 1rem;
     }
 
     .form-label {
+      color: #eee;
       font-weight: 500;
-      color: #ffffff;
     }
 
     .form-control {
-      border-radius: 0.5rem;
-      background-color: rgba(188, 228, 239, 0.85);
-      color: #000;
-    }
-
-    .btn-primary {
-      background: linear-gradient(to right, #38b000, #70e000);
+      background-color: rgba(255, 255, 255, 0.9);
       border: none;
-      font-weight: bold;
-      border-radius: 0.5rem;
-      padding: 12px;
-      transition: all 0.3s ease-in-out;
-      color: white;
+      border-radius: 0.7rem;
+      padding-left: 2.5rem;
+      height: 45px;
+      font-size: 14px;
     }
 
-    .btn-primary:hover {
-      background: linear-gradient(to right, #2d6a4f, #52b788);
-      transform: scale(1.03);
-    }
-
-    .form-icon {
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #52b788;
+    .form-control:focus {
+      border: 2px solid #66ffcc;
+      box-shadow: 0 0 10px #66ffcc33;
     }
 
     .input-group-icon {
       position: relative;
     }
 
-    .input-group-icon input {
-      padding-left: 2.2rem;
+    .form-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #00f7ff;
+      font-size: 1.2rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, #00c9ff, #92fe9d);
+      border: none;
+      font-weight: bold;
+      border-radius: 0.5rem;
+      padding: 12px 30px;
+      margin-top: 1rem;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(to right, #0f2027, #2c5364);
+      transform: scale(1.05);
     }
 
     .header-image {
       max-width: 80px;
+      margin-bottom: 1rem;
+    }
+
+    .alert-info {
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #1b4332;
+      font-weight: bold;
+      border-radius: 0.5rem;
     }
 
     .gauge-container {
@@ -101,14 +107,17 @@
     }
 
     .lottie-box {
-      width: 150px;
+      width: 200px;
       margin: 10px auto;
     }
 
-    .alert-info {
-      background-color: rgba(255, 255, 255, 0.85);
-      color: #1b4332;
-      font-weight: bold;
+    @media (max-width: 768px) {
+      .form-control {
+        padding-left: 2rem;
+      }
+      .form-icon {
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
@@ -121,108 +130,202 @@
         <h2>Credit Score Prediction</h2>
         <form method="POST" action="/predict">
           <div class="row">
-            {% for field in [
-              ['Age', 'Age', 'bi-person'],
-              ['Annual Income', 'Annual_Income', 'bi-cash-stack'],
-              ['Monthly In-hand Salary', 'Monthly_Inhand_Salary', 'bi-wallet2'],
-              ['Number of Bank Accounts', 'Num_Bank_Accounts', 'bi-bank'],
-              ['Number of Credit Cards', 'Num_Credit_Card', 'bi-credit-card'],
-              ['Interest Rate', 'Interest_Rate', 'bi-percent'],
-              ['Number of Loans', 'Num_of_Loan', 'bi-journal-richtext'],
-              ['Delay from Due Date (avg days)', 'Delay_from_due_date', 'bi-calendar-x'],
-              ['Number of Delayed Payments', 'Num_of_Delayed_Payment', 'bi-alarm'],
-              ['Changed Credit Limit (%)', 'Changed_Credit_Limit', 'bi-graph-up'],
-              ['Number of Credit Inquiries', 'Num_Credit_Inquiries', 'bi-search'],
-              ['Credit Mix (0: Bad, 1: Standard, 2: Good)', 'Credit_Mix', 'bi-diagram-3'],
-              ['Outstanding Debt', 'Outstanding_Debt', 'bi-exclamation-diamond'],
-              ['Credit Utilization Ratio', 'Credit_Utilization_Ratio', 'bi-pie-chart'],
-              ['Credit History Age', 'Credit_History_Age', 'bi-clock-history'],
-              ['Payment of Min Amount (0 or 1)', 'Payment_of_Min_Amount', 'bi-check2-square'],
-              ['Total EMI per Month', 'Total_EMI_per_month', 'bi-calendar-check'],
-              ['Amount Invested Monthly', 'Amount_invested_monthly', 'bi-piggy-bank'],
-              ['Monthly Balance', 'Monthly_Balance', 'bi-bar-chart']
-            ] %}
-            <div class="col-md-6 mb-3">
-              <label class="form-label">{{ field[0] }}</label>
+
+            <!-- All input fields -->
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Age</label>
               <div class="input-group-icon">
-                <i class="bi {{ field[2] }} form-icon"></i>
-                <input type="number" class="form-control" name="{{ field[1] }}" required>
+                <i class="bi bi-person form-icon"></i>
+                <input type="number" name="Age" class="form-control" required>
               </div>
             </div>
-            {% endfor %}
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Annual Income</label>
+              <div class="input-group-icon">
+                <i class="bi bi-cash-stack form-icon"></i>
+                <input type="number" name="Annual_Income" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Monthly In-hand Salary</label>
+              <div class="input-group-icon">
+                <i class="bi bi-wallet2 form-icon"></i>
+                <input type="number" name="Monthly_Inhand_Salary" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Number of Bank Accounts</label>
+              <div class="input-group-icon">
+                <i class="bi bi-bank form-icon"></i>
+                <input type="number" name="Num_Bank_Accounts" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Number of Credit Cards</label>
+              <div class="input-group-icon">
+                <i class="bi bi-credit-card form-icon"></i>
+                <input type="number" name="Num_Credit_Card" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Interest Rate</label>
+              <div class="input-group-icon">
+                <i class="bi bi-percent form-icon"></i>
+                <input type="number" name="Interest_Rate" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Number of Loans</label>
+              <div class="input-group-icon">
+                <i class="bi bi-journal-richtext form-icon"></i>
+                <input type="number" name="Num_of_Loan" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Delay from Due Date (avg days)</label>
+              <div class="input-group-icon">
+                <i class="bi bi-calendar-x form-icon"></i>
+                <input type="number" name="Delay_from_due_date" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Number of Delayed Payments</label>
+              <div class="input-group-icon">
+                <i class="bi bi-alarm form-icon"></i>
+                <input type="number" name="Num_of_Delayed_Payment" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Changed Credit Limit (%)</label>
+              <div class="input-group-icon">
+                <i class="bi bi-graph-up form-icon"></i>
+                <input type="number" name="Changed_Credit_Limit" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Number of Credit Inquiries</label>
+              <div class="input-group-icon">
+                <i class="bi bi-search form-icon"></i>
+                <input type="number" name="Num_Credit_Inquiries" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Credit Mix (0: Bad, 1: Standard, 2: Good)</label>
+              <div class="input-group-icon">
+                <i class="bi bi-diagram-3 form-icon"></i>
+                <input type="number" name="Credit_Mix" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Outstanding Debt</label>
+              <div class="input-group-icon">
+                <i class="bi bi-exclamation-diamond form-icon"></i>
+                <input type="number" name="Outstanding_Debt" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Credit Utilization Ratio</label>
+              <div class="input-group-icon">
+                <i class="bi bi-pie-chart form-icon"></i>
+                <input type="number" name="Credit_Utilization_Ratio" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Credit History Age</label>
+              <div class="input-group-icon">
+                <i class="bi bi-clock-history form-icon"></i>
+                <input type="number" name="Credit_History_Age" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Payment of Min Amount (0 or 1)</label>
+              <div class="input-group-icon">
+                <i class="bi bi-check2-square form-icon"></i>
+                <input type="number" name="Payment_of_Min_Amount" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Total EMI per Month</label>
+              <div class="input-group-icon">
+                <i class="bi bi-calendar-check form-icon"></i>
+                <input type="number" name="Total_EMI_per_month" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Amount Invested Monthly</label>
+              <div class="input-group-icon">
+                <i class="bi bi-piggy-bank form-icon"></i>
+                <input type="number" name="Amount_invested_monthly" class="form-control" required>
+              </div>
+            </div>
+            <div class="col-md-4 mb-4">
+              <label class="form-label">Monthly Balance</label>
+              <div class="input-group-icon">
+                <i class="bi bi-bar-chart form-icon"></i>
+                <input type="number" name="Monthly_Balance" class="form-control" required>
+              </div>
+            </div>
+
           </div>
-          <button type="submit" class="btn btn-primary mt-3">Predict Credit Score</button>
+          <button type="submit" class="btn btn-primary">Predict Credit Score</button>
         </form>
 
         {% if prediction_text %}
         <div class="mt-4">
-        <div class="alert alert-info">{{ prediction_text }}</div>
-        <div class="gauge-container">
+          <div class="alert alert-info">{{ prediction_text }}</div>
+          <div class="gauge-container">
             <canvas id="scoreGauge"></canvas>
-        </div>
-        <div class="lottie-box">
+          </div>
+          <div class="lottie-box">
             <lottie-player
-            src="https://assets5.lottiefiles.com/packages/lf20_j1adxtyb.json"
-            background="transparent"
-            speed="1"
-            style="width: 100%; height: 100%;"
-            loop autoplay>
+              src="https://assets5.lottiefiles.com/packages/lf20_j1adxtyb.json"
+              background="transparent"
+              speed="1"
+              loop autoplay>
             </lottie-player>
-        </div>
+          </div>
         </div>
         <script>
-            const predictionScore = parseFloat("{{ prediction_score }}") || 0;
-          
-            // Set color based on score
-            let scoreColor = '#dc3545'; // Red
-            if (predictionScore >= 70) {
-              scoreColor = '#28a745'; // Green
-            } else if (predictionScore >= 40) {
-              scoreColor = '#ffc107'; // Yellow
-            }
-          
-            const ctx = document.getElementById('scoreGauge').getContext('2d');
-          
-            new Chart(ctx, {
-              type: 'doughnut',
-              data: {
-                labels: ['Score', 'Remaining'],
-                datasets: [{
-                  data: [predictionScore, 100 - predictionScore],
-                  backgroundColor: [scoreColor, '#f0f0f0'],
-                  borderWidth: 0
-                }]
-              },
-              options: {
-                cutout: '70%',
-                animation: {
-                  animateRotate: true,
-                  duration: 1500
-                },
-                plugins: {
-                  legend: { display: false },
-                  tooltip: { enabled: false },
-                  datalabels: {
-                    display: true,
-                    formatter: function(value, context) {
-                      if (context.dataIndex === 0) {
-                        return predictionScore.toFixed(0) + '%';
-                      }
-                      return '';
-                    },
-                    color: '#000',
-                    font: {
-                      size: 24,
-                      weight: 'bold'
-                    },
-                    anchor: 'center',
-                    align: 'center'
-                  }
+          const predictionScore = parseFloat("{{ prediction_score }}") || 0;
+          let scoreColor = '#dc3545';
+          if (predictionScore >= 70) scoreColor = '#28a745';
+          else if (predictionScore >= 40) scoreColor = '#ffc107';
+
+          const ctx = document.getElementById('scoreGauge').getContext('2d');
+          new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+              labels: ['Score', 'Remaining'],
+              datasets: [{
+                data: [predictionScore, 100 - predictionScore],
+                backgroundColor: [scoreColor, '#f0f0f0'],
+                borderWidth: 0
+              }]
+            },
+            options: {
+              cutout: '70%',
+              animation: { animateRotate: true, duration: 1500 },
+              plugins: {
+                legend: { display: false },
+                tooltip: { enabled: false },
+                datalabels: {
+                  display: true,
+                  formatter: (value, ctx) => ctx.dataIndex === 0 ? predictionScore.toFixed(0) + '%' : '',
+                  color: '#000',
+                  font: { size: 24, weight: 'bold' },
+                  anchor: 'center',
+                  align: 'center'
                 }
-              },
-              plugins: [ChartDataLabels]
-            });
-          </script>
-{% endif %}
+              }
+            },
+            plugins: [ChartDataLabels]
+          });
+        </script>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
