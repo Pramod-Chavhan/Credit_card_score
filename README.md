@@ -8,7 +8,7 @@
 </p>
 
 ---
-
+ ## Live Demo : https://creditcard-score.onrender.com/
 ## 📌 Overview
 
 This project classifies individuals' credit scores into categories like **Good**, **Average**, and **Poor** using a **Random Forest Classifier**. It processes financial and demographic data to assist in credit risk evaluation, and is built to support real-world applications such as lending systems and financial dashboards.
